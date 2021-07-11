@@ -27,22 +27,30 @@ public class ContractorController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/contractor/{taxId}")
     public ContractorDto getContractorByTaxId(@RequestParam Long taxId) {
-        return mapper.mapToContractorDto(services.getContractorByTaxId(taxId));
+        if (services.checkIfContractorExists(taxId)) {
+            return mapper.mapToContractorDto(services.getContractorByTaxId(taxId));
+        } else throw new IllegalArgumentException("Contractor not found");
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/contractor", consumes = APPLICATION_JSON_VALUE)
     public ContractorDto createContractor(@RequestBody @Valid ContractorDto contractorDto) {
-        return mapper.mapToContractorDto(services.createContractor(mapper.mapToContractor(contractorDto)));
+        if (!services.checkIfContractorExists(contractorDto.getTaxId())) {
+            return mapper.mapToContractorDto(services.createContractor(mapper.mapToContractor(contractorDto)));
+        } else throw new IllegalArgumentException("Contractor with this 'Tax Id' already exists");
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/contractor", consumes = APPLICATION_JSON_VALUE)
     public ContractorDto updateContractor(@RequestBody @Valid ContractorDto contractorDto) {
-        return mapper.mapToContractorDto(services.updateContractor(mapper.mapToContractor(contractorDto)));
+        if (services.checkIfContractorExists(contractorDto.getTaxId())) {
+            return mapper.mapToContractorDto(services.updateContractor(mapper.mapToContractor(contractorDto)));
+        } else throw new IllegalArgumentException("Contractor not found");
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/contractor/{taxId}")
     public void deleteContractor(@RequestParam Long taxId) {
-        services.deleteContractor(taxId);
+        if (services.checkIfContractorExists(taxId)) {
+            services.deleteContractor(taxId);
+        } else throw new IllegalArgumentException("Contractor not found");
     }
 
 }

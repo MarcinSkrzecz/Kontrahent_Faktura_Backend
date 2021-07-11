@@ -22,21 +22,15 @@ public class ContractorService {
     }
 
     public Contractor getContractorByTaxId(Long taxId) {
-        if (checkIfContractorExists(taxId)) {
-            return repository.findById(taxId).get();
-        } else throw new IllegalArgumentException("Contractor not found");
+        return repository.findById(taxId).get();
     }
 
     public Contractor createContractor(Contractor contractor) {
-        if (!checkIfContractorExists(contractor.getTaxId())) {
-            return repository.save(contractor);
-        } else throw new IllegalArgumentException("Contractor with this 'Tax Id' already exists");
+        return repository.save(contractor);
     }
 
     public Contractor updateContractor(Contractor contractor) {
-        if (checkIfContractorExists(contractor.getTaxId())) {
-            return repository.save(contractor);
-        } else throw new IllegalArgumentException("Contractor not found");
+        return repository.save(contractor);
     }
 
     public void deleteContractor(Long taxId) {

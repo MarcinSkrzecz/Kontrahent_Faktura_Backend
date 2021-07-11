@@ -26,21 +26,15 @@ public class InvoiceService {
     }
 
     public Invoice getInvoiceById(Long id) {
-        if (checkIfInvoiceExists(id)) {
-            return repository.getById(id);
-        } else throw new IllegalArgumentException("Invoice not found");
+        return repository.getById(id);
     }
 
     public Invoice createInvoice(Invoice invoice) {
-        if (!checkIfInvoiceExists(invoice.getInvoiceId())) {
-            return repository.save(invoice);
-        } else throw new IllegalArgumentException("Invoice with this 'Id' already exists");
+        return repository.save(invoice);
     }
 
     public Invoice updateInvoice(Invoice invoice) {
-        if (checkIfInvoiceExists(invoice.getInvoiceId())) {
-            return repository.save(invoice);
-        } else throw new IllegalArgumentException("Invoice not found");
+        return repository.save(invoice);
     }
 
     public void deleteInvoice(Long id) {
